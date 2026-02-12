@@ -1,0 +1,201 @@
+project:
+  title: "Dental Appointment"
+  domain: "Healthcare / Dental Clinic"
+  type: "Data Analysis and EDA Project"
+  language: "Python"
+  python_version: "3.10"
+  execution_environment: "Python IDLE"
+  data_format: "CSV"
+  visualization_format: "PNG"
+  methodology: "EDA (Exploratory Data Analysis)"
+
+objective:
+  primary:
+    - Perform exploratory data analysis on dental appointment data
+    - Generate meaningful PNG graphs for academic evaluation
+  secondary:
+    - Maintain a single source of truth for paths and configurations
+    - Ensure easy maintainability and scalability
+
+faculty_defined_flow:
+  - Input CSV
+  - Raw Data
+  - Data Cleaning
+  - Processed Data
+  - EDA (Analysis + Visualization)
+  - ML (Optional)
+  - Outputs and Reports
+
+configuration_management:
+  purpose:
+    - Centralize CSV paths, folder paths, column names, and graph names
+    - Avoid hardcoding values in multiple Python scripts
+    - Enable easy updates by changing values in one place only
+  approach:
+    - Use a dedicated Python configuration file
+  config_file:
+    name: "config.py"
+    role: "Single source of truth for the entire project"
+  usage_rule:
+    - All Python scripts must import configuration values from config.py
+    - No direct paths or column names should be hardcoded in scripts
+
+paths_configuration:
+  data_paths:
+    raw_csv: "data/dental_appointments_raw.csv"
+    cleaned_csv: "data/dental_appointments_cleaned.csv"
+  output_paths:
+    graphs_dir: "graphs/"
+    report_dir: "report/"
+
+csv_structure:
+  file_name: "dental_appointments_raw.csv"
+  expected_rows: "100 to 300"
+  column_count: 15
+
+csv_columns:
+  appointment_id:
+    type: string
+  patient_id:
+    type: string
+  patient_age:
+    type: integer
+  patient_gender:
+    type: string
+    values: [M, F]
+  dentist_id:
+    type: string
+  dentist_name:
+    type: string
+  specialization:
+    type: string
+  appointment_date:
+    type: date
+    format: YYYY-MM-DD
+  appointment_day:
+    type: string
+  time_slot:
+    type: string
+  appointment_duration:
+    type: integer
+    unit: minutes
+  appointment_status:
+    type: string
+    values: [Pending, Completed, Cancelled]
+  booking_type:
+    type: string
+    values: [Online, Walk-in]
+  waiting_time_minutes:
+    type: integer
+  no_show:
+    type: string
+    values: [Yes, No]
+
+data_cleaning:
+  tasks:
+    - Handle missing values
+    - Remove duplicate records
+    - Normalize categorical values
+    - Validate numerical ranges
+  output:
+    cleaned_csv: "dental_appointments_cleaned.csv"
+
+eda:
+  definition:
+    "Process of analyzing and visualizing data to understand patterns and trends before applying machine learning."
+  tools:
+    - pandas
+    - numpy
+    - matplotlib
+  output_format: PNG
+
+eda_graphs:
+  appointments_per_dentist:
+    file: "appointments_per_dentist.png"
+    type: Bar Chart
+  appointment_status_distribution:
+    file: "appointment_status_distribution.png"
+    type: Pie Chart
+  daily_appointment_trend:
+    file: "daily_appointment_trend.png"
+    type: Line Chart
+  patient_age_distribution:
+    file: "patient_age_distribution.png"
+    type: Histogram
+  busy_time_slots:
+    file: "busy_time_slots.png"
+    type: Heatmap
+
+analysis_outputs:
+  - Dentist workload insights
+  - Peak booking days and time slots
+  - Appointment cancellation trends
+  - No-show behavior analysis
+
+machine_learning:
+  included: true
+  optional: true
+  target_column: "no_show"
+  algorithms:
+    - Logistic Regression
+    - Decision Tree
+  purpose:
+    - Predict appointment no-shows
+    - Identify busy time slots
+
+project_structure:
+  root_folder: "Dental_EDA_Project"
+  folders:
+    - data
+    - scripts
+    - graphs
+    - report
+
+scripts:
+  config:
+    name: "config.py"
+    responsibility: "Centralized configuration management"
+  data_cleaning:
+    name: "data_cleaning.py"
+    responsibility: "Clean raw CSV and generate processed CSV"
+  eda_analysis:
+    name: "eda_analysis.py"
+    responsibility: "Perform EDA and generate PNG graphs"
+  ml_model:
+    name: "ml_model.py"
+    responsibility: "Optional ML model training and evaluation"
+
+private_scripts:
+  purpose: "Internal utility scripts NOT included in submission"
+  note: "These scripts are for developer use only and should not be shared with faculty"
+  generate_data:
+    name: "generate_data.py"
+    location: "notes/" 
+    responsibility: "Generate realistic synthetic dental appointment data"
+    include_in_submission: false
+    visibility: "private"
+
+execution:
+  environment: "Python IDLE"
+  run_method: "Execute scripts using F5"
+  outputs_visible_as:
+    - Console output
+    - PNG graph files
+    - CSV files
+
+submission_artifacts:
+  included:
+    - Raw CSV file (data/dental_appointments_raw.csv)
+    - Cleaned CSV file (data/dental_appointments_cleaned.csv)
+    - config.py
+    - data_cleaning.py
+    - eda_analysis.py
+    - ml_model.py (optional)
+    - PNG graphs (graphs/)
+    - Insights report (report/)
+  excluded:
+    - generate_data.py (private - DO NOT SUBMIT)
+
+viva_ready_statement:
+  configuration:
+    "The project uses a centralized configuration file so changes to CSV paths or column names are reflected across all scripts automatically."
