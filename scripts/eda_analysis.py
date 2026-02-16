@@ -47,18 +47,18 @@ def load_cleaned_data():
     print("=" * 60)
     
     if not os.path.exists(Paths.CLEANED_CSV):
-        print(f"\n❌ Error: Cleaned CSV not found at {Paths.CLEANED_CSV}")
+        print(f"\nError: Error: Cleaned CSV not found at {Paths.CLEANED_CSV}")
         print("Please run data_cleaning.py first.")
         return None
     
-    print(f"\n📂 Loading data from: {Paths.CLEANED_CSV}")
+    print(f"\n Loading data from: {Paths.CLEANED_CSV}")
     
     df = pd.read_csv(Paths.CLEANED_CSV)
     
     # Convert date column
     df[Columns.APPOINTMENT_DATE] = pd.to_datetime(df[Columns.APPOINTMENT_DATE])
     
-    print(f"✓ Loaded {len(df)} records")
+    print(f" Loaded {len(df)} records")
     
     return df
 
@@ -69,7 +69,7 @@ def load_cleaned_data():
 
 def plot_appointments_per_dentist(df):
     """Create a bar chart showing appointments per dentist."""
-    print("\n📊 Creating: Appointments per Dentist (Bar Chart)")
+    print("\n Creating: Appointments per Dentist (Bar Chart)")
     
     # Count appointments per dentist
     dentist_counts = df.groupby([Columns.DENTIST_ID, Columns.DENTIST_NAME]).size().reset_index(name='count')
@@ -100,10 +100,10 @@ def plot_appointments_per_dentist(df):
     os.makedirs(Paths.GRAPHS_DIR, exist_ok=True)
     plt.savefig(Paths.GRAPH_APPOINTMENTS_PER_DENTIST, dpi=150, bbox_inches='tight', 
                 facecolor='white', edgecolor='none')
-    plt.show()
-    plt.close()
+    plt.show(block=False)  # Non-blocking interactive display
+    plt.pause(0.1)  # Give GUI time to render
     
-    print(f"  ✓ Saved: {Paths.GRAPH_APPOINTMENTS_PER_DENTIST}")
+    print(f"   Saved: {Paths.GRAPH_APPOINTMENTS_PER_DENTIST}")
     
     return dentist_counts
 
@@ -114,7 +114,7 @@ def plot_appointments_per_dentist(df):
 
 def plot_status_distribution(df):
     """Create a pie chart showing appointment status distribution."""
-    print("\n📊 Creating: Appointment Status Distribution (Pie Chart)")
+    print("\n Creating: Appointment Status Distribution (Pie Chart)")
     
     # Count status distribution
     status_counts = df[Columns.APPOINTMENT_STATUS].value_counts()
@@ -158,10 +158,10 @@ def plot_status_distribution(df):
     # Save
     plt.savefig(Paths.GRAPH_STATUS_DISTRIBUTION, dpi=150, bbox_inches='tight',
                 facecolor='white', edgecolor='none')
-    plt.show()
-    plt.close()
+    plt.show(block=False)  # Non-blocking interactive display
+    plt.pause(0.1)  # Give GUI time to render
     
-    print(f"  ✓ Saved: {Paths.GRAPH_STATUS_DISTRIBUTION}")
+    print(f"   Saved: {Paths.GRAPH_STATUS_DISTRIBUTION}")
     
     return status_counts
 
@@ -172,7 +172,7 @@ def plot_status_distribution(df):
 
 def plot_daily_trend(df):
     """Create a line chart showing daily appointment trends."""
-    print("\n📊 Creating: Daily Appointment Trend (Line Chart)")
+    print("\n Creating: Daily Appointment Trend (Line Chart)")
     
     # Group by date
     daily_counts = df.groupby(Columns.APPOINTMENT_DATE).size().reset_index(name='count')
@@ -212,10 +212,10 @@ def plot_daily_trend(df):
     # Save
     plt.savefig(Paths.GRAPH_DAILY_TREND, dpi=150, bbox_inches='tight',
                 facecolor='white', edgecolor='none')
-    plt.show()
-    plt.close()
+    plt.show(block=False)  # Non-blocking interactive display
+    plt.pause(0.1)  # Give GUI time to render
     
-    print(f"  ✓ Saved: {Paths.GRAPH_DAILY_TREND}")
+    print(f"   Saved: {Paths.GRAPH_DAILY_TREND}")
     
     return daily_counts
 
@@ -226,7 +226,7 @@ def plot_daily_trend(df):
 
 def plot_age_distribution(df):
     """Create a histogram showing patient age distribution."""
-    print("\n📊 Creating: Patient Age Distribution (Histogram)")
+    print("\n Creating: Patient Age Distribution (Histogram)")
     
     # Create figure
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -263,10 +263,10 @@ def plot_age_distribution(df):
     # Save
     plt.savefig(Paths.GRAPH_AGE_DISTRIBUTION, dpi=150, bbox_inches='tight',
                 facecolor='white', edgecolor='none')
-    plt.show()
-    plt.close()
+    plt.show(block=False)  # Non-blocking interactive display
+    plt.pause(0.1)  # Give GUI time to render
     
-    print(f"  ✓ Saved: {Paths.GRAPH_AGE_DISTRIBUTION}")
+    print(f"   Saved: {Paths.GRAPH_AGE_DISTRIBUTION}")
     
     return df[Columns.PATIENT_AGE].describe()
 
@@ -277,7 +277,7 @@ def plot_age_distribution(df):
 
 def plot_busy_time_slots(df):
     """Create a heatmap showing busy time slots by day of week."""
-    print("\n📊 Creating: Busy Time Slots (Heatmap)")
+    print("\n Creating: Busy Time Slots (Heatmap)")
     
     # Create pivot table: days vs time slots
     heatmap_data = pd.crosstab(df[Columns.APPOINTMENT_DAY], df[Columns.TIME_SLOT])
@@ -325,10 +325,10 @@ def plot_busy_time_slots(df):
     # Save
     plt.savefig(Paths.GRAPH_BUSY_TIME_SLOTS, dpi=150, bbox_inches='tight',
                 facecolor='white', edgecolor='none')
-    plt.show()
-    plt.close()
+    plt.show(block=False)  # Non-blocking interactive display
+    plt.pause(0.1)  # Give GUI time to render
     
-    print(f"  ✓ Saved: {Paths.GRAPH_BUSY_TIME_SLOTS}")
+    print(f"   Saved: {Paths.GRAPH_BUSY_TIME_SLOTS}")
     
     return heatmap_data
 
@@ -344,47 +344,47 @@ def generate_insights(df, dentist_counts, status_counts, daily_counts, age_stats
     print("=" * 60)
     
     # Dentist workload
-    print("\n📋 Dentist Workload Insights:")
+    print("\n Dentist Workload Insights:")
     busiest_dentist = dentist_counts.iloc[-1]
-    print(f"  • Busiest Dentist: {busiest_dentist[Columns.DENTIST_NAME]} ({busiest_dentist['count']} appointments)")
+    print(f"  - Busiest Dentist: {busiest_dentist[Columns.DENTIST_NAME]} ({busiest_dentist['count']} appointments)")
     
     # Appointment status
-    print("\n📋 Appointment Status Insights:")
+    print("\n Appointment Status Insights:")
     completed_rate = (status_counts.get('Completed', 0) / status_counts.sum()) * 100
     cancelled_rate = (status_counts.get('Cancelled', 0) / status_counts.sum()) * 100
-    print(f"  • Completion Rate: {completed_rate:.1f}%")
-    print(f"  • Cancellation Rate: {cancelled_rate:.1f}%")
+    print(f"  - Completion Rate: {completed_rate:.1f}%")
+    print(f"  - Cancellation Rate: {cancelled_rate:.1f}%")
     
     # Peak booking days
-    print("\n📋 Peak Booking Insights:")
+    print("\n Peak Booking Insights:")
     day_counts = df[Columns.APPOINTMENT_DAY].value_counts()
     peak_day = day_counts.idxmax()
-    print(f"  • Busiest Day: {peak_day} ({day_counts.max()} appointments)")
+    print(f"  - Busiest Day: {peak_day} ({day_counts.max()} appointments)")
     
     # Peak time slots
     time_counts = df[Columns.TIME_SLOT].value_counts()
     peak_time = time_counts.idxmax()
-    print(f"  • Busiest Time Slot: {peak_time} ({time_counts.max()} appointments)")
+    print(f"  - Busiest Time Slot: {peak_time} ({time_counts.max()} appointments)")
     
     # No-show analysis
-    print("\n📋 No-Show Behavior Analysis:")
+    print("\n No-Show Behavior Analysis:")
     no_show_rate = (df[Columns.NO_SHOW] == 'Yes').mean() * 100
-    print(f"  • Overall No-Show Rate: {no_show_rate:.1f}%")
+    print(f"  - Overall No-Show Rate: {no_show_rate:.1f}%")
     
     # No-show by booking type
     no_show_by_booking = df.groupby(Columns.BOOKING_TYPE)[Columns.NO_SHOW].apply(
         lambda x: (x == 'Yes').mean() * 100
     )
     for booking_type, rate in no_show_by_booking.items():
-        print(f"  • No-Show Rate ({booking_type}): {rate:.1f}%")
+        print(f"  - No-Show Rate ({booking_type}): {rate:.1f}%")
     
     # Patient demographics
-    print("\n📋 Patient Demographics:")
-    print(f"  • Average Age: {df[Columns.PATIENT_AGE].mean():.1f} years")
-    print(f"  • Age Range: {df[Columns.PATIENT_AGE].min()} - {df[Columns.PATIENT_AGE].max()} years")
+    print("\n Patient Demographics:")
+    print(f"  - Average Age: {df[Columns.PATIENT_AGE].mean():.1f} years")
+    print(f"  - Age Range: {df[Columns.PATIENT_AGE].min()} - {df[Columns.PATIENT_AGE].max()} years")
     gender_dist = df[Columns.PATIENT_GENDER].value_counts(normalize=True) * 100
     for gender, pct in gender_dist.items():
-        print(f"  • {gender}: {pct:.1f}%")
+        print(f"  - {gender}: {pct:.1f}%")
     
     print("\n" + "=" * 60)
 
@@ -411,8 +411,8 @@ def main():
     # Generate insights
     generate_insights(df, dentist_counts, status_counts, daily_counts, age_stats, heatmap_data)
     
-    print("\n✅ All visualizations generated successfully!")
-    print(f"📁 Graphs saved to: {Paths.GRAPHS_DIR}")
+    print("\n All visualizations generated successfully!")
+    print(f" Graphs saved to: {Paths.GRAPHS_DIR}")
     
     return df
 
