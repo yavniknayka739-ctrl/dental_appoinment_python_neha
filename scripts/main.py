@@ -312,7 +312,7 @@ def main():
     
     # Print welcome banner
     print("\n" + "=" * 60)
-    print("         DENTAL APPOINTMENT ANALYSIS SYSTEM")
+    print("         DENTAL APPOINTMENT ANALYSIS")
     print("           EDA & Machine Learning Project")
     print("                AUTO-RUN MODE")
     print("=" * 60)
