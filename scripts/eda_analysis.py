@@ -90,7 +90,7 @@ def plot_appointments_per_dentist(df):
     # Styling
     ax.set_xlabel('Number of Appointments')
     ax.set_ylabel('Dentist')
-    ax.set_title('Appointments per Dentist', fontsize=16, fontweight='bold', pad=20)
+    ax.set_title('Appointments per Dentist - Bar Chart', fontsize=16, fontweight='bold', pad=20)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     
@@ -146,7 +146,7 @@ def plot_status_distribution(df):
         autotext.set_fontweight('bold')
         autotext.set_fontsize(12)
     
-    ax.set_title('Appointment Status Distribution', fontsize=16, fontweight='bold', pad=20)
+    ax.set_title('Appointment Status Distribution - Pie Chart', fontsize=16, fontweight='bold', pad=20)
     
     # Add legend with counts
     legend_labels = [f'{status}: {count}' for status, count in status_counts.items()]
@@ -199,7 +199,7 @@ def plot_daily_trend(df):
     # Styling
     ax.set_xlabel('Date')
     ax.set_ylabel('Number of Appointments')
-    ax.set_title('Daily Appointment Trend', fontsize=16, fontweight='bold', pad=20)
+    ax.set_title('Daily Appointment Trend - Line Chart', fontsize=16, fontweight='bold', pad=20)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     
@@ -253,7 +253,7 @@ def plot_age_distribution(df):
     # Styling
     ax.set_xlabel('Patient Age (years)')
     ax.set_ylabel('Number of Patients')
-    ax.set_title('Patient Age Distribution', fontsize=16, fontweight='bold', pad=20)
+    ax.set_title('Patient Age Distribution - Histogram', fontsize=16, fontweight='bold', pad=20)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.legend()
@@ -318,7 +318,7 @@ def plot_busy_time_slots(df):
     # Styling
     ax.set_xlabel('Time Slot')
     ax.set_ylabel('Day of Week')
-    ax.set_title('Busy Time Slots by Day of Week', fontsize=16, fontweight='bold', pad=20)
+    ax.set_title('Busy Time Slots by Day of Week - Heatmap', fontsize=16, fontweight='bold', pad=20)
     
     plt.tight_layout()
     

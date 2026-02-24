@@ -179,7 +179,7 @@ def plot_confusion_matrix(y_test, y_pred):
     
     ax.set_xlabel('Predicted')
     ax.set_ylabel('Actual')
-    ax.set_title('Decision Tree - Confusion Matrix', fontsize=14, fontweight='bold')
+    ax.set_title('Decision Tree - Confusion Matrix - Heatmap', fontsize=14, fontweight='bold')
     
     plt.tight_layout()
     
@@ -206,7 +206,7 @@ def plot_feature_importance(importance):
     
     ax.set_xlabel('Importance')
     ax.set_ylabel('Feature')
-    ax.set_title('Decision Tree - Feature Importance', fontsize=14, fontweight='bold')
+    ax.set_title('Decision Tree - Feature Importance - Bar Chart', fontsize=14, fontweight='bold')
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     
