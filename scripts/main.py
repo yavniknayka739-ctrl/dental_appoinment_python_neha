@@ -1,8 +1,8 @@
 # =============================================================================
-# DENTAL APPOINTMENT EDA PROJECT - AUTO-RUN SCRIPT
+# DENTAL APPOINTMENT EDA PROJECT - MAIN SCRIPT
 # =============================================================================
-# This script automatically runs all analysis steps without user interaction.
-# Outputs: Data Cleaning -> EDA Charts -> Analysis Insights -> ML Model
+# This script runs all steps one by one.
+# Steps: Data Cleaning -> EDA Charts -> Analysis Insights -> ML Model
 # =============================================================================
 
 import os
@@ -28,19 +28,19 @@ import numpy as np
 # =============================================================================
 
 def print_header(title):
-    """Print a formatted section header."""
+    # prints a big header line
     print("\n" + "=" * 60)
     print(f"  {title}")
     print("=" * 60)
 
 
 def print_separator():
-    """Print a visual separator."""
+    # prints a divider line
     print("\n" + "-" * 60)
 
 
 def load_data():
-    """Load the cleaned dataset."""
+    # loads the cleaned csv file
     if not os.path.exists(Paths.CLEANED_CSV):
         print("\nError: Cleaned data not found. Running data cleaning first...")
         import data_cleaning
@@ -54,7 +54,7 @@ def load_data():
 # =============================================================================
 
 def run_data_cleaning():
-    """Execute data cleaning step."""
+    # run data cleaning
     print_header("STEP 1: DATA CLEANING")
     
     import data_cleaning
@@ -68,12 +68,12 @@ def run_data_cleaning():
 # =============================================================================
 
 def run_eda_charts():
-    """Generate all EDA charts automatically."""
+    # generate all charts
     print_header("STEP 2: EDA CHARTS GENERATION")
     
     import eda_analysis
     
-    # Load data
+    # load data
     df = eda_analysis.load_cleaned_data()
     if df is None:
         print("\nError: Failed to load data for EDA charts.")
@@ -81,7 +81,7 @@ def run_eda_charts():
     
     print(f"\nLoaded {len(df)} records from cleaned dataset")
     
-    # Generate all charts
+    # list of all charts to generate
     charts = [
         ("Appointments per Dentist (Bar Chart)", eda_analysis.plot_appointments_per_dentist),
         ("Appointment Status Distribution (Pie Chart)", eda_analysis.plot_status_distribution),
@@ -94,15 +94,15 @@ def run_eda_charts():
         print(f"\nGenerating: {chart_name}")
         chart_function(df)
     
-    print("\nAll EDA charts generated successfully!")
+    print("\nAll EDA charts generated!")
 
 
 # =============================================================================
-# STEP 3: ANALYSIS INSIGHTS (4 MOST RELEVANT SECTIONS)
+# STEP 3: ANALYSIS INSIGHTS
 # =============================================================================
 
 def run_analysis_insights():
-    """Print the 4 most business-relevant analysis insights."""
+    # print analysis results
     print_header("STEP 3: ANALYSIS INSIGHTS")
     
     df = load_data()
@@ -117,8 +117,7 @@ def run_analysis_insights():
     
     print("\nAppointments per Dentist:")
     for _, row in workload.iterrows():
-        bar = "█" * (row['appointments'] // 3)
-        print(f"  {row[Columns.DENTIST_NAME]}: {row['appointments']} {bar}")
+        print(f"  {row[Columns.DENTIST_NAME]}: {row['appointments']}")
     
     print(f"\n  Summary:")
     print(f"    - Total Dentists: {len(workload)}")
@@ -137,8 +136,7 @@ def run_analysis_insights():
     print("\nStatus Distribution:")
     for status, count in status_counts.items():
         pct = count / total * 100
-        bar = "█" * int(pct / 2)
-        print(f"  {status}: {count} ({pct:.1f}%) {bar}")
+        print(f"  {status}: {count} ({pct:.1f}%)")
     
     print(f"\n  Summary:")
     print(f"    - Total Appointments: {total}")
@@ -157,15 +155,13 @@ def run_analysis_insights():
     for day in day_order:
         if day in day_counts.index:
             count = day_counts[day]
-            bar = "█" * (count // 2)
-            print(f"  {day:12}: {count:3} {bar}")
+            print(f"  {day:12}: {count:3}")
     
     time_counts = df[Columns.TIME_SLOT].value_counts().head(5)
     
     print("\nTop 5 Busiest Time Slots:")
     for slot, count in time_counts.items():
-        bar = "█" * (count // 2)
-        print(f"  {slot}: {count} {bar}")
+        print(f"  {slot}: {count}")
     
     print(f"\n  Summary:")
     print(f"    - Busiest Day: {day_counts.idxmax()} ({day_counts.max()} appointments)")
@@ -191,10 +187,9 @@ def run_analysis_insights():
         subset = df[df[Columns.APPOINTMENT_DAY] == day]
         if len(subset) > 0:
             rate = (subset[Columns.NO_SHOW] == 'Yes').mean() * 100
-            bar = "█" * int(rate)
-            print(f"  {day:12}: {rate:5.1f}% {bar}")
+            print(f"  {day:12}: {rate:5.1f}%")
     
-    print("\nAll analysis insights generated!")
+    print("\nAll analysis insights done!")
 
 
 # =============================================================================
@@ -202,15 +197,15 @@ def run_analysis_insights():
 # =============================================================================
 
 def run_ml_model():
-    """Train and evaluate the Decision Tree model."""
+    # train the decision tree model
     print_header("STEP 4: MACHINE LEARNING - NO-SHOW PREDICTION")
     
-    print("\nTraining Decision Tree model for no-show prediction...")
+    print("\nTraining Decision Tree model...")
     
     import ml_model
     model = ml_model.main()
     
-    print("\nMachine learning model trained and evaluated!")
+    print("\nModel training done!")
     
     return model
 
@@ -220,21 +215,21 @@ def run_ml_model():
 # =============================================================================
 
 def run_sample_prediction():
-    """Demonstrate a sample prediction using the trained model."""
+    # run a sample prediction to show how the model works
     print_header("STEP 5: SAMPLE NO-SHOW PREDICTION")
     
-    print("\nPreparing sample prediction...")
+    print("\nRunning sample prediction...")
     
-    # Load the trained model
+    # import the ml module
     import ml_model
     
-    # Load data for encoding
+    # load data
     df = load_data()
     
-    # Prepare features
+    # prepare features
     X, y, feature_columns, label_encoders = ml_model.prepare_features(df)
     
-    # Train model (quick retrain for demo)
+    # split data and train the model again
     from sklearn.model_selection import train_test_split
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
@@ -254,7 +249,7 @@ def run_sample_prediction():
     print("  - Booking Type: Online")
     print("  - Duration: 30 minutes")
     
-    # Encode sample data
+    # sample patient data
     sample_data = {
         Columns.PATIENT_AGE: 45,
         Columns.APPOINTMENT_DURATION: 30,
@@ -265,7 +260,7 @@ def run_sample_prediction():
         Columns.BOOKING_TYPE: 'Online'
     }
     
-    # Encode categorical variables
+    # convert text columns to numbers so the model can read them
     sample_encoded = []
     sample_encoded.append(sample_data[Columns.PATIENT_AGE])
     sample_encoded.append(sample_data[Columns.APPOINTMENT_DURATION])
@@ -276,14 +271,14 @@ def run_sample_prediction():
             encoded_value = label_encoders[col].transform([sample_data[col]])[0]
             sample_encoded.append(encoded_value)
         except:
-            # If value not in training data, use 0
+            # value not seen in training, just use 0
             sample_encoded.append(0)
     
-    # Make prediction
+    # get the prediction
     prediction = model.predict([sample_encoded])[0]
     probability = model.predict_proba([sample_encoded])[0]
     
-    # Display results
+    # show the results
     print("\nPrediction Results:")
     print(f"\n  Model: Decision Tree Classifier")
     print(f"\n  Will Patient No-Show? {'YES' if prediction == 1 else 'NO'}")
@@ -300,7 +295,7 @@ def run_sample_prediction():
         print("    - Standard appointment confirmation")
         print("    - Patient likely to attend as scheduled")
     
-    print("\nSample prediction completed!")
+    print("\nSample prediction done!")
 
 
 # =============================================================================
@@ -308,26 +303,24 @@ def run_sample_prediction():
 # =============================================================================
 
 def main():
-    """Main function to execute all steps sequentially."""
+    # main function, runs all steps one by one
     
-    # Print welcome banner
+    # print the welcome banner
     print("\n" + "=" * 60)
     print("         DENTAL APPOINTMENT ANALYSIS")
-    print("           EDA & Machine Learning Project")
-    print("                AUTO-RUN MODE")
     print("=" * 60)
     
-    print("\nStarting automated analysis pipeline...\n")
+    print("\nStarting analysis...\n")
     
-    # Execute all steps
+    # run all the steps
     run_data_cleaning()
     run_eda_charts()
     run_analysis_insights()
     run_ml_model()
     run_sample_prediction()
     
-    # Print completion summary
-    print_header("ANALYSIS PIPELINE COMPLETED SUCCESSFULLY!")
+    # print summary at the end
+    print_header("ANALYSIS COMPLETED!")
     
     print("\n  Summary of Generated Outputs:")
     print("    - Cleaned data saved")
